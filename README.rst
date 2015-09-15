@@ -25,6 +25,7 @@ Sections
 Researchers
 ===========
 - Rick Evans
+- Yulong Li
 - Kerk Phillips
 
 
