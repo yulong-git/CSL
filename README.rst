@@ -5,7 +5,7 @@ Current State Linearization Toolkit
 
 Abstract
 ========
-This code repository stores the code needed to execute the current state linearization method discussed in Evans and Phillips (2015) "Linearization about the Current State: A Computational Method for Approximating Nonlinear Policy Functions during Simulation."
+This code repository stores the code needed to execute the current state linearization method discussed in Evans and Phillips (2015) `"Linearization about the Current State: A Computational Method for Approximating Nonlinear Policy Functions during Simulation." <https://drive.google.com/file/d/0B6KGaihAO5TJZGJLemE1V1d5bFE/view>`_
 
 This toolkit can be used to solve and simulate using either the CSL method from the paper or to solve and simulate using standard linearization about the steady state (SSL).  
 
@@ -25,6 +25,7 @@ Sections
 Researchers
 ===========
 - Rick Evans
+- Yulong Li
 - Kerk Phillips
 
 
