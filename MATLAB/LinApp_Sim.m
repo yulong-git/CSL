@@ -2,14 +2,14 @@ function [X,Y] = LinApp_Sim(Xm,Z,PP,QQ,UU,RR,SS,VV)
 
 % Version 1.0, written by Kerk Phillips, April 2014
 %  
-% Uses the coeffiecients from a linear approximation to % generate data for
-% next period given today's state.  The set of endogenous state varaibles 
+% Uses the coefficients from a linear approximation to % generate data for
+% next period given today's state.  The set of endogenous state variables 
 % known today is Xm and the set of exogenous state variables is Z.
 % This program generates X.  The input and output values are in deviation 
 % from the linearization point (almost always the steady % state, but not 
 % necessarily so).  This means you will need to add back the steady state 
 % or other values after you have called this function.  How you do this 
-% depends on whether you used log-linarization or simple linearization in
+% depends on whether you used log-linearization or simple linearization in
 % deriving the values of the input coefficients.
 %
 % This function takes the following inputs:
@@ -27,11 +27,6 @@ function [X,Y] = LinApp_Sim(Xm,Z,PP,QQ,UU,RR,SS,VV)
 %          state variables for next period
 %  Y     - ny-by-1 column vector containing the value of the endogenous
 %          non-state variables for the current period
-%
-% Source: R. Evans and K. Phillips (2014) "Linearization about the Current
-% State: A Computational Method for Approximating Nonlinear Policy 
-% Functions during Simulation," mimeo, Brigham Young University Department
-% of Economics.
 %
 % Copyright: K. Phillips.  Feel free to copy, modify and use at your own 
 % risk.  However, you are not allowed to sell this software or otherwise 

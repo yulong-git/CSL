@@ -1,6 +1,7 @@
-function [X, Y] = LinApp_SSL(X0,Z,XYbar,logX,PP,QQ,UU,Y0,RR,SS,VV)
+function [X, Y, E] = LinApp_SSL_Euler(X0,Z,XYbar,logX,PP,QQ,UU,NN,...
+                         Eps,Phi,param,funcname,Y0,RR,SS,VV)
 
-% Version 1.0, written by Kerk Phillips, April 2014
+% Version 1.0, written by Kerk Phillips, October 2015
 %  
 % Generates a history of X & Y variables by linearizing the policy function
 % about the steady state as in Uhlig's toolkit.
@@ -25,7 +26,8 @@ function [X, Y] = LinApp_SSL(X0,Z,XYbar,logX,PP,QQ,UU,Y0,RR,SS,VV)
 %          state variables
 %  Y     - nobs-by-ny matrix vector containing the value of the endogenous
 %          non-state variables
-%
+%  E     - nobs-by-(nx+ny) matrix vector containing the value of the "Euler" 
+%          errors from the characterizing equations
 % Copyright: K. Phillips.  Feel free to copy, modify and use at your own 
 % risk.  However, you are not allowed to sell this software or otherwise 
 % impinge on its free distribution.
@@ -105,4 +107,47 @@ else
     else
         Y = [];
     end
+end
+
+E = zeros(nobs,nx+ny);
+[~,ne] = size(Eps);
+for t=1:nobs-1
+    % Calculate Euler Errors
+    % Recall Eps is value of epsilon and phi is the probability
+    % Sum over potential shocks
+    for e=1:ne
+        % get conditional value of Zp
+        Zp = NN*Z(t+1,:) + Eps(e,:);
+        % generate conditional value of Xp and Yp
+        Xdev = zeros(1,nx);
+        Zdev = zeros(1,nz);
+        % Since LinApp_Sim uses column vectors and inputs, transpose
+        if ny>0
+            [Xtil, Ytil] = LinApp_Sim(Xdev',Zdev',PP,QQ,UU,RR,SS,VV);
+            Ytil = Ytil';
+        else
+            [Xtil, ~] = LinApp_Sim(Xdev',Zdev',PP,QQ,UU);
+        end
+        Xtil = Xtil';
+        % Convert to levels
+        if logX
+            Xp = X(t+1,:).*exp(Xtil); 
+            if ny> 0
+                Yp = Y(t+1,:).*exp(Ytil);
+            else
+                Yp = [];
+            end
+        else
+            Xp = X(t+1,:) + Xtil;
+            if ny>0
+                Yp = Y(t+1,:) + Ytil;
+            else
+                Y = [];
+            end
+        end
+        % observed history
+        theta2 = [Xp X(t+1,:) X(t,:) Zp Z(t+1)]';
+        % Weight errors by probability and sum
+        E(t,:) = E(t,:) + funcname(theta2,param)' * Phi(e);
+    end    
 end

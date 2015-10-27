@@ -1,5 +1,6 @@
 function [AA, BB, CC, DD, FF, GG, HH, JJ, KK, LL, MM, WW, TT] = ...
     LinApp_Deriv(funcname,param,theta0,nx,ny,nz,logX)
+
 % Version 2.1, written by Kerk Phillips, previously named RBCnumerderiv.m
 % Updated April 1, 2014
 % This function numerically differentiates a set of functions from a DSGE
@@ -13,7 +14,7 @@ function [AA, BB, CC, DD, FF, GG, HH, JJ, KK, LL, MM, WW, TT] = ...
 % This function takes the following inputs:
 %  funcname - is the name of the function which generates a column vector 
 %  from ny+nx dynamic equations. 
-%    The ny eqyations to be linearized into the form below in the first 
+%    The ny equations to be linearized into the form below in the first 
 %    ny rows.
 %     A X(t) + B X(t-1) + C Y(t) + D Z(t) = 0 
 %    The function must be written so as to evaluate to zero for all rows
@@ -29,16 +30,11 @@ function [AA, BB, CC, DD, FF, GG, HH, JJ, KK, LL, MM, WW, TT] = ...
 %    log-linearized (true) or simply linearized (false).  Z variables are
 %    always simply linearized.
 %
-% The function generates matrices AA thru MM from the log-lineaization of 
+% The function generates matrices AA thru MM from the log-linearization of 
 % the equations in the function "funcname".
 %  WW is an ny-by-1 vector of constants from the first ny equations.
 %  TT is an nx-by-1 vector of constants from the last nx equations.
-%   When linearizing about the steady state WW and TT are zeros.
-%
-% Source: R. Evans and K. Phillips (2014) "Linearization about the Current
-% State: A Computational Method for Approximating Nonlinear Policy 
-% Functions during Simulation," mimeo, Brigham Young University Department
-% of Economics.
+%   When linearizing about the steady state WW and TT are zeroes.
 %
 % Copyright: K. Phillips.  Feel free to copy, modify and use at your own 
 % risk.  However, you are not allowed to sell this software or otherwise 

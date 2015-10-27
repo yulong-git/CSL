@@ -6,8 +6,8 @@ function [PP, QQ, UU, RR, SS, VVV] = ...
 % function.  This version outputs the policy function coefficients: PP,
 % QQ and UU for X, and RR, SS and VV for Y.
 %
-% This function take the follwoing as inputs:
-%  The matrices of deriviatives: FF - TT.
+% This function takes the following as inputs:
+%  The matrices of derivatives: FF - TT.
 %  The autoregression coefficient matrix NN from the law of motion for Z.
 %  Z0 is the Z-point about which the linearization is taken.  For
 %   linearizing about the steady state this is Zbar and normally Zbar = 0.
@@ -15,10 +15,6 @@ function [PP, QQ, UU, RR, SS, VVV] = ...
 %  Sylv is an indicator variable telling the program to use the built-in
 %   function sylvester() to solve for QQ and SS, if possible.  Default is
 %   to use Sylv=1.
-% Source: R. Evans and K. Phillips (2014) "Linearization about the Current
-% State: A Computational Method for Approximating Nonlinear Policy 
-% Functions during Simulation," mimeo, Brigham Young University Department
-% of Economics.
 %
 % Copyright: K. Phillips.  Feel free to copy, modify and use at your own 
 % risk.  However, you are not allowed to sell this software or otherwise 
