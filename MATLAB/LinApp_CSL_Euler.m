@@ -17,7 +17,7 @@ function [X, Y, E] = LinApp_CSL_Euler(funcname,param,X0,Z,NN,...
 %          log-linearized (true) or simply linearized (false).  Z variables
 %          are always simply linearized, default is 1.
 %  Eps   - nz-by-ne matrix of discrete values for the support of epsilon
-%          shocks nect period (used for calculating Euler errors)
+%          shocks next period (used for calculating Euler errors)
 %  Phi   - nz-by-ne matrix of probabilities corresponding to the elements
 %          of Eps
 %  Sylv  - is an indicator variable telling the program to use the built-in
@@ -27,10 +27,10 @@ function [X, Y, E] = LinApp_CSL_Euler(funcname,param,X0,Z,NN,...
 %
 % This function outputs the following:
 %  X     - nobs-by-nx matrix containing the value of the endogenous
-%          state variables for next period.
-%  Y     - nobs-by-ny matix vector containing the value of the endogenous
-%          non-state variables for next period.
-%  E     - nobs-by-(nx+ny) matix vector containing the value of the Euler
+%          state variables.
+%  Y     - nobs-by-ny matrix vector containing the value of the endogenous
+%          non-state variables.
+%  E     - nobs-by-(nx+ny) matrix vector containing the value of the 'Euler'
 %          errors each period
 %
 % Source: R. Evans and K. Phillips (2014) "Linearization about the Current

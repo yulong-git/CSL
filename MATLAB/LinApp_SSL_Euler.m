@@ -1,7 +1,7 @@
 function [X, Y, E] = LinApp_SSL_Euler(X0,Z,XYbar,logX,PP,QQ,UU,NN,...
                          Eps,Phi,param,funcname,Y0,RR,SS,VV)
 
-% Version 1.0, written by Kerk Phillips, April 2014
+% Version 1.0, written by Kerk Phillips, October 2015
 %  
 % Generates a history of X & Y variables by linearizing the policy function
 % about the steady state as in Uhlig's toolkit.
@@ -23,10 +23,11 @@ function [X, Y, E] = LinApp_SSL_Euler(X0,Z,XYbar,logX,PP,QQ,UU,NN,...
 %
 % This function outputs the following:
 %  X     - nobs-by-nx matrix containing the value of the endogenous
-%          state variables for next period
-%  Y     - nobs-by-ny matix vector containing the value of the endogenous
-%          non-state variables for next period
-%
+%          state variables
+%  Y     - nobs-by-ny matrix vector containing the value of the endogenous
+%          non-state variables
+%  E     - nobs-by-(nx+ny) matrix vector containing the value of the "Euler" 
+%          errors from the characterizing equations
 % Copyright: K. Phillips.  Feel free to copy, modify and use at your own 
 % risk.  However, you are not allowed to sell this software or otherwise 
 % impinge on its free distribution.

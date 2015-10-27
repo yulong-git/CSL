@@ -22,9 +22,9 @@ function [X, Y] = LinApp_SSL(X0,Z,XYbar,logX,PP,QQ,UU,Y0,RR,SS,VV)
 %
 % This function outputs the following:
 %  X     - nobs-by-nx matrix containing the value of the endogenous
-%          state variables for next period
-%  Y     - nobs-by-ny matix vector containing the value of the endogenous
-%          non-state variables for next period
+%          state variables
+%  Y     - nobs-by-ny matrix vector containing the value of the endogenous
+%          non-state variables
 %
 % Copyright: K. Phillips.  Feel free to copy, modify and use at your own 
 % risk.  However, you are not allowed to sell this software or otherwise 

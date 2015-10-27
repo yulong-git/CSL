@@ -7,20 +7,20 @@ function XYbar = LinApp_FindSS(funcname,param,guessXY,Zbar,nx,ny)
 % This function takes the following inputs:
 %  funcname - is the name of the function which generates a column vector 
 %  from ny+nx dynamic equations. 
-%    The ny eqyations to be linearized into the form below in the first 
+%    The ny equations to be linearized into the form below in the first 
 %    ny rows.
 %     A X(t) + B X(t-1) + C Y(t) + D Z(t) = 0 
 %    The function must be written so as to evaluate to zero for all rows
 %    in the steady state.
 %  param is a vector of parameter values to be passed to funcname.
-%  guessXY - guess for the steady state vslues of X and Y
+%  guessXY - guess for the steady state values of X and Y
 %  Zbar - 1-by-nz vector of Z steady state values
 %  nx - number of X variables
 %  ny - number of Y variables
 %
 % This function outputs the following:
 %  XYbar 1-by-(nx+ny) vector of X and Y steady state values, with the X
-%  values in positions 1 - nx and an the Y values in nx+1 - nx+ny.
+%  values in positions 1 - nx and the Y values in nx+1 - nx+ny.
 %
 % Copyright: K. Phillips.  Feel free to copy, modify and use at your own 
 % risk.  However, you are not allowed to sell this software or otherwise 

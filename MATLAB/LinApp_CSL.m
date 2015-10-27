@@ -22,9 +22,9 @@ function [X, Y] = LinApp_CSL(funcname,param,X0,Z,NN,logX,Sylv,Y0)
 %
 % This function outputs the following:
 %  X     - nobs-by-nx matrix containing the value of the endogenous
-%          state variables for next period.
-%  Y     - nobs-by-ny matix vector containing the value of the endogenous
-%          non-state variables for next period.
+%          state variables.
+%  Y     - nobs-by-ny matrix vector containing the value of the endogenous
+%          non-state variables.
 %
 % Source: R. Evans and K. Phillips (2014) "Linearization about the Current
 % State: A Computational Method for Approximating Nonlinear Policy 
