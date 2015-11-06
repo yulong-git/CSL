@@ -4,7 +4,7 @@ Version 1.0, written by Kerk Phillips, April 2014
 Adapted by Yulong Li, November 2015 
 '''
 from __future__ import division
-from numpy import tile, array, empty, ndarray, zeros, log, asarray
+import numpy as np
 
 def LinApp_Sim(Xm,Z,PP,QQ,UU,RR,SS,VV):
     '''
@@ -23,10 +23,10 @@ def LinApp_Sim(Xm,Z,PP,QQ,UU,RR,SS,VV):
     Parameters
     -----------
     Xm: array, dtype=float
-        nx-by-1 vector of X(t-1) values
+        nx vector of X(t-1) values
 
     Z: array, dtype=float
-        nz-by-1 vector of Z(t) values
+        nz vector of Z(t) values
 
     PP: 2D-array, dtype=float
         nx-by-nx  matrix of X(t-1) on X(t) coefficients
@@ -35,7 +35,7 @@ def LinApp_Sim(Xm,Z,PP,QQ,UU,RR,SS,VV):
         nx-by-nz  matrix of Z(t) on X(t) coefficients
 
     UU: array, dtype=float
-        nx-by-1 vector of X(t) constants
+        nx vector of X(t) constants
 
     RR: 2D-array, dtype=float
         ny-by-nx  matrix of X(t-1) on Y(t) coefficients
@@ -44,77 +44,46 @@ def LinApp_Sim(Xm,Z,PP,QQ,UU,RR,SS,VV):
         ny-by-nz  matrix of Z(t) on Y(t) coefficients
 
     VV: array, dtype=float
-        ny-by-1 vector of Y(t) constants
+        ny vector of Y(t) constants
 
     Returns
     --------
     X: array, dtype=float
-        nx-by-1 vector containing the value of the endogenous
+        nx vector containing the value of the endogenous
         state variables for next period
     
     Y: array, dtype=float
-        ny-by-1 vector containing the value of the endogenous
+        ny vector containing the value of the endogenous
         non-state variables for the current period
     '''
-% set RR, SS, and VV to empty matrices if not passed.
-if (~exist('RR', 'var'))
-    RR = [];
-end
-if (~exist('SS', 'var'))
-    SS = [];
-end
-if (~exist('VV', 'var'))
-    VV = [];
-end
+    # Find the number of each kind of state variable
+    # Using Xm find nx
+    if len(Xm.shape)!=1:
+        print('Xm must be a one-dimensional array')
+    else:
+        nx = Xm.shape[0]
+        # Using RR find ny
+        ny = RR.shape[0]
 
-% Find the number of each kind of state variable
-%  Using Xm find nx
-[nrow,ncol] = size(Xm);
-nx = nrow;
-if nrow > 1 && ncol > 1
-    disp('Xm must be a column vector')
-    disp('you have input a 2-dimensional matrix')
-elseif nrow == 1 && ncol > 1
-    disp('Xm must be a column vector')
-    disp('you have input row vector, which we will now transpose')
-    Xm = Xm';
-    nx = ncol;
-end
+        # Using Z find nz
+        if len(Z.shape)!=1:
+            print('Z must be a one-dimensional array')
+        else:
+            nz = Z.shape[0]
 
-%  Using RR find ny
-[nrow,~] = size(RR);
-ny = nrow;
+            # Check conformity of input coefficient matrices
+            d1,d2 = PP.shape
+            if d1 != nx or d2 != nx:
+                print('Dimensions of PP incorrect')
 
-%  Using Z find nz
-[nrow,ncol]  = size(Z);
-nz = nrow;
-if nrow > 1 && ncol > 1
-    disp('Z must be a column vector')
-    disp('you have input a 2-dimensional matrix')
-elseif nrow == 1 && ncol > 1
-    disp('Z must be a column vector')
-    disp('you have input row vector, which we will now transpose')
-    Z = Z';
-    nz = ncol;
-end
+            d1,d2 = QQ.shape
+            if d1 != nx or d2 != nz:
+                print('dimensions of QQ incorrect')
 
-% Check conformity of input coefficient matrices
-[d1,d2] = size(PP);
-if d1 ~= nx || d2 ~= nx
-    disp('dimensions of PP incorrect')
-end
-[d1,d2] = size(QQ);
-if d1 ~= nx || d2 ~= nz
-    disp('dimensions of QQ incorrect')
-end
-
-
-% Generate data for next period, one equation at a time
-X = PP*Xm + QQ*Z + UU;
-if ny>0
-    Y = RR*Xm + SS*Z + VV;
-else
-    Y = [];
-end
-
-end
+            # Generate data for next period, one equation at a time
+            X = PP.dot(Xm) + QQ.dot(Z) + UU
+            if ny>0:
+                Y = RR.dot(Xm) + SS.dot(Z) + VV
+            else:
+                Y = []
+    return np.array(X), np.array(Y)

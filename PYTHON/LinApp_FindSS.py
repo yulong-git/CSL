@@ -3,6 +3,17 @@ Version 1.0, written by Kerk Phillips, April 2014
 
 Adapted by Yulong Li, November 2015
 '''
+import numpy as np
+import scipy.optimize as opt
+import scipy.stats as stats
+
+def steady(XYbar, Zbar, funcname, param, nx, ny):
+	Xbar = XYbar[0:nx]
+	Ybar = XYbar[nx:nx+ny]
+	In = np.concatenate( (Xbar, Xbar, Xbar, Ybar, Ybar, Zbar, Zbar), axis=0)
+	Out = funcname(In,param)
+	return Out
+
 
 def LinApp_FindSS(funcname,param,guessXY,Zbar,nx,ny):
 	'''
@@ -26,12 +37,12 @@ def LinApp_FindSS(funcname,param,guessXY,Zbar,nx,ny):
 		guess for the steady state values of X and Y
 	
 	Zbar: array, dtype=float
-		1-by-nz vector of Z steady state values
+		nz vector of Z steady state values
 	
-	nx: number, int
+	nx: number, dtype=int
 		number of X variables
 	
-	ny: number, int
+	ny: number, dtype=int
 		number of Y variables
 
 	Returns
@@ -40,16 +51,8 @@ def LinApp_FindSS(funcname,param,guessXY,Zbar,nx,ny):
 		1-by-(nx+ny) vector of X and Y steady state values, with the X
 		values in positions 1 - nx and the Y values in nx+1 - nx+ny.
 	'''
-	f = @(XYbar) steady(XYbar, Zbar, funcname, param, nx, ny);
+	f = lambda XYbar: steady(XYbar, Zbar, funcname, param, nx, ny)
+	XYbar = opt.fsolve(f, x0=guessXY)
 
+	return XYbar
 
-	%  use fsolve
-	XYbar = fsolve(f,guessXY,options);
-
-	end
-
-	function out = steady(XYbar, Zbar, funcname, param, nx, ny)
-	Xbar = XYbar(1:nx);
-	Ybar = XYbar(1+nx:nx+ny);
-	in = [Xbar; Xbar; Xbar; Ybar; Ybar; Zbar; Zbar];
-	out = funcname(in,param);

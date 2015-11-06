@@ -35,21 +35,21 @@ def LinApp_Deriv(funcname,param,theta0,nx,ny,nz,logX):
         A vector of steady state values for state parameters. Place the values
         of X in the front, then the Y values, followed by the Z's.
 
-    nx: number, int
+    nx: number, dtype=int
         The number of elements in X
 
-    ny: number, int
+    ny: number, dtype=nt
         The number of elements in Y
 
-    nz: number, int
+    nz: number, dtype=int
         The number of elements in Z
 
-    logX: binary
+    logX: binary, dtype=int
         true if log-linearizing the X & Y variables, false for simple linearization
 
     Returns
     -------
-    AA - MM : 2D array, dtype=float:
+    AA - MM : 2D-array, dtype=float:
         The equaitons described by Uhlig in the log-linearization.
     """
     theta0 = asarray(theta0)
@@ -111,4 +111,4 @@ def LinApp_Deriv(funcname,param,theta0,nx,ny,nz,logX):
     CC = CC if CC else zeros((ny, ny))
     DD = DD if DD else zeros((ny, nz))
 
-    return [AA, BB, CC, DD, FF, GG, HH, JJ, KK, LL, MM, TT, WW]
+    return [AA, BB, CC, DD, FF, GG, HH, JJ, KK, LL, MM, WW, TT]
