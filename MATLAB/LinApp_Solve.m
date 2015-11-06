@@ -256,7 +256,7 @@ else
       RR = - CC_plus*(AA*PP+BB);
       if ny>0
           PM = (FF-JJ*CC\AA);
-          if rank(PM)<Nx+ny
+          if rank(PM)<nx+ny
               Sylv = 0;
           end
       else
@@ -268,7 +268,7 @@ else
           if ny>0
             Anew = PM \ (FF*PP+GG+JJ*RR-KK*CC\AA);
             Bnew = NN;
-            Cnew = PM \ (JJ*CC\DD*N+KK*CC\DD-LL*NN-MM);
+            Cnew = PM \ (JJ*CC\DD*NN+KK*CC\DD-LL*NN-MM);
             QQ = sylvester(Anew,Bnew,Cnew);
             SS = -CC \(AA*QQ+DD);
           else
