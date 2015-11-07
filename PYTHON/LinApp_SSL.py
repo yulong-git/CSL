@@ -21,7 +21,7 @@ def LinApp_SSL(X0,Z,XYbar,logX,PP,QQ,UU,Y0,RR,SS,VV):
         nobs-by-nz matrix of Z values
     
     XYbar: array, dtype=float
-        (nx+ny) vector of X and Y steady state values
+        nx+ny vector of X and Y steady state values
     
     logX: binary, dtype=int
         an indicator that determines if the X & Y variables are
@@ -59,6 +59,10 @@ def LinApp_SSL(X0,Z,XYbar,logX,PP,QQ,UU,Y0,RR,SS,VV):
         nobs-by-ny matrix vector containing the value of the endogenous
         non-state variables
     '''
+    # Formating
+    X0 = array(X0)
+    Y0 = array(Y0)
+
     # get values for nx, ny, nz and nobs
     nobs,nz = Z.shape
     nx = X0.shape[0]
@@ -66,14 +70,14 @@ def LinApp_SSL(X0,Z,XYbar,logX,PP,QQ,UU,Y0,RR,SS,VV):
     ny = nxy - nx
 
     # get Xbar and Ybar
-    Xbar = XYbar[:,0:nx]
-    Ybar = XYbar[:,nx:nx+ny]
+    Xbar = XYbar[0:nx]
+    Ybar = XYbar[nx:nx+ny]
 
     # Generate a history of X's and Y's
-    X = zeros(nobs,nx)
-    Y = zeros(nobs,ny)
-    Xtil = zeros(nobs,nx)
-    Ytil = zeros(nobs,ny)
+    X = zeros((nobs,nx))
+    Y = zeros((nobs,ny))
+    Xtil = zeros((nobs,nx))
+    Ytil = zeros((nobs,ny))
     
     # set starting values
     if logX:
@@ -85,7 +89,7 @@ def LinApp_SSL(X0,Z,XYbar,logX,PP,QQ,UU,Y0,RR,SS,VV):
         if ny>0:
             Ytil[0,:] = Y0 - Ybar
     # simulate
-    for t in xrange(1:nobs):
+    for t in xrange(1,nobs):
         Xtemp, Ytemp = LinApp_Sim(Xtil[t-1,:],Z[t,:],PP,QQ,UU,RR,SS,VV)
         Xtil[t,:] = Xtemp
         if ny>0:

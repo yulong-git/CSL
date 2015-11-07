@@ -10,7 +10,10 @@ import scipy.stats as stats
 def steady(XYbar, Zbar, funcname, param, nx, ny):
 	Xbar = XYbar[0:nx]
 	Ybar = XYbar[nx:nx+ny]
-	In = np.concatenate( (Xbar, Xbar, Xbar, Ybar, Ybar, Zbar, Zbar), axis=0)
+	In1 = np.concatenate((Xbar, Xbar, Xbar))
+	In2 = np.concatenate((Ybar, Ybar))
+	In3 = np.concatenate((Zbar, Zbar))
+	In = np.append( np.append(In1, In2), In3)
 	Out = funcname(In,param)
 	return Out
 
@@ -51,6 +54,11 @@ def LinApp_FindSS(funcname,param,guessXY,Zbar,nx,ny):
 		1-by-(nx+ny) vector of X and Y steady state values, with the X
 		values in positions 1 - nx and the Y values in nx+1 - nx+ny.
 	'''
+	#Formating
+	param = np.array(param)
+	guessXY = np.array(guessXY)
+	Zbar = np.array(Zbar)
+
 	f = lambda XYbar: steady(XYbar, Zbar, funcname, param, nx, ny)
 	XYbar = opt.fsolve(f, x0=guessXY)
 

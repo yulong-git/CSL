@@ -63,21 +63,23 @@ def LinApp_CSL(funcname,param,X0,Z,NN,logX,Sylv,Y0):
     Functions during Simulation," mimeo, Brigham Young University Department
     of Economics.
     '''
+    # Formating
+    X0 = array(X0)
+    Y0 = array(Y0)
+    
     # get values for nx, ny, nz and nobs
     nobs,nz = Z.shape
     nx = X0.shape[0]
     ny = Y0.shape[0]
 
     # Generate a history of X's and Y's
-    X = zeros(nobs,nx)
-    Y = zeros(nobs,ny)
+    X = zeros((nobs,nx))
+    Y = zeros((nobs,ny))
 
     # set starting values
     X[0,:] = X0
     if ny>0:
         Y[0,:] = Y0
-    else:
-        #Y[0,:] = []
 
     for t in xrange(1, nobs):
         # set the linearization point to the current state
@@ -92,10 +94,10 @@ def LinApp_CSL(funcname,param,X0,Z,NN,logX,Sylv,Y0):
         LinApp_Deriv(funcname,param,theta0,nx,ny,nz,logX)
         # solve for coefficient matrices
         PP, QQ, UU, RR, SS, VV = \
-        LinApp_Solve(AA,BB,CC,DD,FF,GG,HH,JJ, KK,LL,MM,WW,TT,NN,Z(t,:),Sylv)
+        LinApp_Solve(AA,BB,CC,DD,FF,GG,HH,JJ, KK,LL,MM,WW,TT,NN,Z[t,:],Sylv)
         
-        Xdev = zeros(nx)
-        Zdev = zeros(nz)
+        Xdev = zeros((nx))
+        Zdev = zeros((nz))
         Xtil, Ytil = LinApp_Sim(Xdev,Zdev,PP,QQ,UU,RR,SS,VV)
 
         if Ytil.any():

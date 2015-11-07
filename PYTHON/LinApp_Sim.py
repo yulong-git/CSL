@@ -82,6 +82,7 @@ def LinApp_Sim(Xm,Z,PP,QQ,UU,RR,SS,VV):
 
             # Generate data for next period, one equation at a time
             X = PP.dot(Xm) + QQ.dot(Z) + UU
+
             if ny>0:
                 Y = RR.dot(Xm) + SS.dot(Z) + VV
             else:

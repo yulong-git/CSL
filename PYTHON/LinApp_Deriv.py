@@ -60,7 +60,7 @@ def LinApp_Deriv(funcname,param,theta0,nx,ny,nz,logX):
     incr = np.zeros_like(theta0) + eps
     dx = np.zeros_like(incr) + 2.0 * incr
 
-    T0 = func(theta0)  # should be very close to zero if linearizing about SS
+    T0 = funcname(theta0, param)  # should be very close to zero if linearizing about SS
     devplus = tile(theta0.reshape(1, theta0.size), (length, 1))
     devminus = tile(theta0.reshape(1, theta0.size), (length, 1))
 
@@ -73,14 +73,14 @@ def LinApp_Deriv(funcname,param,theta0,nx,ny,nz,logX):
     for i in range(0,length):
         if i < 3 * nx + 2 * ny:
             if logX:
-                bigplus[:, i] = theta0[i] * (func(devplus[i, :]) - T0) / (1.0 + T0)
-                bigminus[:, i] = theta0[i] * (func(devminus[i, :]) - T0) / (1.0 + T0)
+                bigplus[:, i] = theta0[i] * (funcname(devplus[i, :], param) - T0) / (1.0 + T0)
+                bigminus[:, i] = theta0[i] * (funcname(devminus[i, :], param) - T0) / (1.0 + T0)
             else:
-                bigplus[:, i] = func(devplus[i, :])
-                bigminus[:, i] = func(devminus[i, :])
+                bigplus[:, i] = funcname(devplus[i, :], param)
+                bigminus[:, i] = funcname(devminus[i, :], param)
         else:
-            bigplus[:, i] = func(devplus[i, :])
-            bigminus[:, i] = func(devminus[i, :])
+            bigplus[:, i] = funcname(devplus[i, :], param)
+            bigminus[:, i] = funcname(devminus[i, :], param)
     
     bigMat = zeros((height,length))
     for i in range(0,length):
@@ -99,12 +99,15 @@ def LinApp_Deriv(funcname,param,theta0,nx,ny,nz,logX):
     MM = array(bigMat[ny:ny + nx, 3 * nx + 2 * ny + nz:length])
     TT = log(1 + T0)
 
-    if len(TT.shape)>1: #Added
+    if len(TT.shape)>1: #TT is matrix
         WW = array(TT[0:ny, :])
         TT = array(TT[ny:ny + nx, :])
-    else: #Added
-        WW = array(TT[0:ny]) #Added
-        TT = array(TT[ny:ny + nx])#Added
+    elif len(TT.shape)==1: #TT is vector
+        WW = array(TT[0:ny]) 
+        TT = array(TT[ny:ny + nx])
+    else: #TT is scalar then nx=1, ny=0
+        WW = zeros(0)
+        TT = TT
 
     AA = AA if AA else zeros((ny, nx))
     BB = BB if BB else zeros((ny, nx))

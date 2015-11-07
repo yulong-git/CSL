@@ -281,6 +281,9 @@ def LinApp_Solve(AA,BB,CC,DD,FF,GG,HH,JJ,KK,LL,MM,WWW,TT,NN,Z0,Sylv):
     LL = np.matrix(LL)
     MM = np.matrix(MM)
     NN = np.matrix(NN)
+    WWW = np.array(WWW)
+    TT = np.array(TT)
+    Z0 = np.array(Z0)
     #Tolerance level to use
     TOL = .000001
 
@@ -464,9 +467,13 @@ def LinApp_Solve(AA,BB,CC,DD,FF,GG,HH,JJ,KK,LL,MM,WWW,TT,NN,Z0,Sylv):
         PM = (FF-la.solve(JJ.dot(CC),AA))
         if npla.matrix_rank(PM)< nx+ny:
             Sylv=0
+            print("Sylvester equation solver condition is not satisfied;"\
+                    +" proceed with the original method...")
     else:
         if npla.matrix_rank(FF)< nx:
             Sylv=0
+            print("Sylvester equation solver condition is not satisfied;"\
+                    +" proceed with the original method...")
     if Sylv:
         print("Using Sylvester equation solver...")
         if ny>0:
@@ -483,7 +490,7 @@ def LinApp_Solve(AA,BB,CC,DD,FF,GG,HH,JJ,KK,LL,MM,WWW,TT,NN,Z0,Sylv):
             Bnew = NN
             Cnew = la.solve(FF, (-LL.dot(NN)-MM))
             QQ = la.solve_sylvester(Anew,Bnew,Cnew)
-            SS = np.zeros((0,0)) #empty matrix
+            SS = np.zeros((0,nz)) #empty matrix
     # then the Uhlig's way
     else:
         if (npla.matrix_rank(VV) < nz * (nx + ny)):
@@ -520,6 +527,18 @@ def LinApp_Solve(AA,BB,CC,DD,FF,GG,HH,JJ,KK,LL,MM,WWW,TT,NN,Z0,Sylv):
         hstack((zeros((nz, nx)), eye(nz)))))
 
     # find constant terms
+    # redefine matrix to be 2D-array for generating vectors UU and VVV
+    AA = np.array(AA)
+    CC = np.array(CC)
+    FF = np.array(FF)
+    GG = np.array(GG)
+    JJ = np.array(JJ)
+    KK = np.array(KK)
+    LL = np.array(LL)
+    NN = np.array(NN)
+    RR = np.array(RR)
+    QQ = np.array(QQ)
+    SS = np.array(SS)
     if ny>0:
         UU1 = -(FF.dot(PP)+GG+JJ.dot(RR)+FF-(JJ+KK).dot(la.solve(CC,AA)))
         UU2 = (TT+(FF.dot(QQ)+JJ.dot(SS)+LL).dot(NN.dot(Z0)-Z0)- \
@@ -528,7 +547,7 @@ def LinApp_Solve(AA,BB,CC,DD,FF,GG,HH,JJ,KK,LL,MM,WWW,TT,NN,Z0,Sylv):
         VVV = la.solve(- CC, (WWW+AA.dot(UU)) )
     else:
         UU = la.solve( -(FF.dot(PP)+FF+GG), (TT+(FF.dot(QQ)+LL).dot(NN.dot(Z0)-Z0)) )
-        VVV = np.zeros((0,0))
+        VVV = np.array([])
 
     return np.array(PP), np.array(QQ), np.array(UU), np.array(RR), np.array(SS),\
              np.array(VVV)
