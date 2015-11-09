@@ -225,19 +225,19 @@ def LinApp_Solve(AA,BB,CC,DD,FF,GG,HH,JJ,KK,LL,MM,WWW,TT,NN,Z0,Sylv):
         derivatives of the model's characterizing equations with
         respect to :math:`Z_t`
     WWW : array, dtype=float, shape=(ny,)
-        The vector of the numberial errors of first ny characterizing
+        The vector of the numerical errors of first ny characterizing
         equations
     TT : array, dtype=float, shape=(nx,)
-        The vector of the numberial errors of the next nx characterizing
+        The vector of the numerical errors of the next nx characterizing
         equations following the first ny equations
     NN : array_like, dtype=float, shape=(nz, nz)
         The autocorrelation matrix for the exogenous state vector z.
     Z0 : array, dtype=float, shape=(nz,)
-        the Z-point about which the linearization is taken.  For linearizing 
+        The Z-point about which the linearization is taken.  For linearizing 
         about the steady state this is Zbar and normally Zbar = 0.
         QQ if true.
     Sylv: binary, dtype=int 
-        an indicator variable telling the program to use the built-in
+        An indicator variable telling the program to use the built-in
         function sylvester() to solve for QQ and SS, if possible.  Default is
         to use Sylv=1.
 
@@ -250,7 +250,8 @@ def LinApp_Solve(AA,BB,CC,DD,FF,GG,HH,JJ,KK,LL,MM,WWW,TT,NN,Z0,Sylv):
         The matrix :math:`Q` in the law of motion for exogenous state
         variables described above.
     U : array, dtype=float, shape=(nx,)
-        ??????????
+        The vector of the constant term of the policy function for X, 
+        the endogenous state variables
     R : 2D-array, dtype=float, shape=(ny, nx)
         The matrix :math:`R` in the law of motion for endogenous state
         variables described above.
@@ -258,7 +259,8 @@ def LinApp_Solve(AA,BB,CC,DD,FF,GG,HH,JJ,KK,LL,MM,WWW,TT,NN,Z0,Sylv):
         The matrix :math:`S` in the law of motion for exogenous state
         variables described above.
     V : array, dtype=float, shape=(ny,)
-        ???????????
+        The vector of the constant term of the policy function for Y, 
+        the endogenous non-state variables
     References
     ----------
     .. [1] Uhlig, H. (1999): "A toolkit for analyzing nonlinear dynamic
@@ -370,7 +372,7 @@ def LinApp_Solve(AA,BB,CC,DD,FF,GG,HH,JJ,KK,LL,MM,WWW,TT,NN,Z0,Sylv):
 
         if npla.matrix_rank(Omega_mat) < nx:
             print("Omega matrix is not invertible, Can't solve for P; we" +
-                    " proceed with QZ-method instead.")
+                    " proceed with the alternative, QZ-method, to get P...")
 
             #~~~~~~~~~ QZ-method codes from SOLVE_QZ ~~~~~~~~#
             Delta_up,Xi_up,UUU,VVV=la.qz(Delta_mat,Xi_mat, output='complex')
@@ -414,6 +416,7 @@ def LinApp_Solve(AA,BB,CC,DD,FF,GG,HH,JJ,KK,LL,MM,WWW,TT,NN,Z0,Sylv):
                 print("Check the model to make sure you have a unique steady" +
                           " state we are having problems with convergence.")
             #End of checking conditions
+            
             #Lambda_mat = np.diag(Xi_sortval[Xi_select]) # to help sol_out.m
             
             VVV=VVV.conj().T
@@ -445,7 +448,8 @@ def LinApp_Solve(AA,BB,CC,DD,FF,GG,HH,JJ,KK,LL,MM,WWW,TT,NN,Z0,Sylv):
             if (sum(sum(abs(PP_imag))) / sum(sum(abs(PP))) > .000001).any():
                 print("A lot of P is complex. We will continue with the" +
                       " real part and hope we don't lose too much information.")
-    # The code from here to the end was from he Uhlig file calc_qrs.m.
+    
+    # The code from here to the end was from the Uhlig file calc_qrs.m.
     # I think for python it fits better here than in a separate file.
 
     # The if and else below make RR and VV depending on our model's setup.
@@ -527,7 +531,7 @@ def LinApp_Solve(AA,BB,CC,DD,FF,GG,HH,JJ,KK,LL,MM,WWW,TT,NN,Z0,Sylv):
         hstack((zeros((nz, nx)), eye(nz)))))
 
     # find constant terms
-    # redefine matrix to be 2D-array for generating vectors UU and VVV
+    # redefine matrices to be 2D-arrays for generating vector UU and VVV
     AA = np.array(AA)
     CC = np.array(CC)
     FF = np.array(FF)
